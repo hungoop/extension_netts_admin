@@ -14,5 +14,7 @@ class ScreenRoutes {
   static const String OPEN_ZONE        = "/open_zone";
   static const String OPEN_ROOM        = "/open_room";
   static const String OPEN_USER        = "/open_user";
+  static const String OPEN_EXT         = "/open_ext";
+  static const String ADD_ROOM        = "/add_room";
 
 }

@@ -12,3 +12,4 @@ export 'tab_servers_event.dart';
 export 'room_event.dart';
 export 'zone_event.dart';
 export 'user_event.dart';
+export 'ext_manager_event.dart';

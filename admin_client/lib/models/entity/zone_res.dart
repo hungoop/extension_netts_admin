@@ -35,7 +35,6 @@ class ZoneRes {
   int totalUser;
   int maxUser;
   int maxRoom;
-  bool isStopped;
   bool customLogin;
   bool forceLogout;
   bool isMedia;
@@ -48,7 +47,6 @@ class ZoneRes {
     required this.totalUser,
     required this.maxUser,
     required this.maxRoom,
-    required this.isStopped,
     required this.customLogin,
     required this.forceLogout,
     required this.isMedia,
@@ -64,7 +62,6 @@ class ZoneRes {
       totalUser: json["TOTAL_USER"],
       maxUser: json["MAX_USER"],
       maxRoom: json["MAX_ROOM"],
-      isStopped: json["IsServerStoped"] ?? true,
       customLogin: json["CUSTOM_LOGIN"],
       forceLogout: json["FORCE_LOGOUT"],
       isMedia: json["IS_MEDIA"],
@@ -80,7 +77,6 @@ class ZoneRes {
     map['TOTAL_USER'] = this.totalUser;
     map['MAX_USER'] = this.maxUser;
     map['MAX_ROOM'] = this.maxRoom;
-    map['IsServerStoped'] = this.isStopped;
     map['CUSTOM_LOGIN'] = this.customLogin;
     map['FORCE_LOGOUT'] = this.forceLogout;
     map['IS_MEDIA'] = this.isMedia;
@@ -92,6 +88,10 @@ class ZoneRes {
   @override
   String toString() {
     return jsonEncode(toJson());
+  }
+
+  String xmlZoneName(){
+    return '${this.zName}.zone.xml';
   }
 
 }

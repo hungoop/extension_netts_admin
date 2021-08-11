@@ -3,14 +3,14 @@ import 'package:admin_client/language/languages.dart';
 import 'package:admin_client/models/models.dart';
 import 'package:admin_client/utils/utils.dart';
 
-abstract class TabLobbyState {}
+abstract class TabServerState {}
 
-class TabLobbyStateInitial extends TabLobbyState {}
+class TabServersStateInitial extends TabServerState {}
 
-class TabLobbyStateFailure extends TabLobbyState {
+class TabServersStateFailure extends TabServerState {
   final String error;
 
-  TabLobbyStateFailure({required this.error});
+  TabServersStateFailure({required this.error});
 
   String getErrorMsg(){
     if (!Utils.checkDataEmpty(error)){
@@ -21,9 +21,9 @@ class TabLobbyStateFailure extends TabLobbyState {
 
 }
 
-class TabLobbyStateSuccess extends TabLobbyState {
+class TabServersStateSuccess extends TabServerState {
   List<ZoneConfigView> views;
 
-  TabLobbyStateSuccess(this.views);
+  TabServersStateSuccess(this.views);
 
 }

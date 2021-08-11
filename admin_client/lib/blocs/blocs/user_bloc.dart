@@ -8,10 +8,9 @@ import 'package:admin_client/repository/repository.dart';
 import 'package:admin_client/utils/util_logger.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  UserRes res;
-  late UserListModel userListModel;
+  UserView view;
 
-  UserBloc(this.res) : super(UserStateInitial());
+  UserBloc(this.view) : super(UserStateInitial());
 
   @override
   Stream<UserState> mapEventToState(UserEvent event) async* {
@@ -21,28 +20,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       if(event is UserEventFetched) {
         if(currState is UserStateInitial){
           initWSListening();
-          userListModel = UserListModel.fromRes([]);
-
-          getUserInRoom();
         }
 
         yield UserStateSuccess(
-          UserView(res),
-          userListModel.dataViews,
+          UserView(view.res),
         );
       }
-      else if(event is UserEventUserList){
+      else if(event is UserEventDelete){
         if(currState is UserStateSuccess){
-          userListModel = UserListModel.fromRes(event.lst);
-
-          yield currState.cloneWith(
-              userViews: userListModel.dataViews
+          var mes = {};
+          mes["zn"] = view.res.zoneName;//zone
+          if(view.roomID != -1){
+            mes["ri"] = view.roomID;//room
+          }
+          mes["un"] = view.res.uName;//user
+          Application.chatSocket.sendExtData(
+              CMD.USER_DISCONNECT, mes
           );
-        }
-      }
-      else if(event is UserEventOpenUser){
-        if(currState is UserStateSuccess){
-          UserView posView = event.userView;
+
+          UtilLogger.log('USER_DISCONNECT', '$mes');
+
+          RouteGenerator.pop();
         }
 
       }
@@ -95,15 +93,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   _onExtMessageReceived(WsExtensionMessage event) async {
     switch(event.cmd) {
-      case CMD.USER_LIST:{
-        DataPackage data = DataPackage.fromJson(event.data);
-
-        if(data.isOK(iSuccess: 0)){
-          List<UserRes> lst = UserListModel.parseRes(data);
-          this.add(UserEventUserList(lst));
-        }
-      }
-      break;
       default:{
         UtilLogger.log(
             'TTT EXT ${event.cmd}', 'hide data'

@@ -33,13 +33,13 @@ class GameTTTModel {
 
     return GameTTTModel(temps);
   }
-
+/*
   static List<PositionRes> parseRes(DataPackage data){
     List<PositionRes> lst = data.dataRoadMap().map((e) {
       return PositionRes.fromJson(e);
     }).toList();
 
     return lst;
-  }
+  }*/
 
 }

@@ -3,14 +3,14 @@ import 'package:admin_client/language/languages.dart';
 import 'package:admin_client/models/models.dart';
 import 'package:admin_client/utils/utils.dart';
 
-abstract class TabUserState {}
+abstract class TabSessionsState {}
 
-class TabUserStateInitial extends TabUserState {}
+class TabSessionsStateInitial extends TabSessionsState {}
 
-class TabUserStateFailure extends TabUserState {
+class TabSessionsStateFailure extends TabSessionsState {
   final String error;
 
-  TabUserStateFailure({required this.error});
+  TabSessionsStateFailure({required this.error});
 
   String getErrorMsg(){
     if (!Utils.checkDataEmpty(error)){
@@ -21,9 +21,9 @@ class TabUserStateFailure extends TabUserState {
 
 }
 
-class TabUserStateSuccess extends TabUserState {
+class TabSessionsStateSuccess extends TabSessionsState {
   List<SessionView> views;
 
-  TabUserStateSuccess(this.views);
+  TabSessionsStateSuccess(this.views);
 
 }

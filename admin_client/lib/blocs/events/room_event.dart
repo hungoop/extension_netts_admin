@@ -25,3 +25,14 @@ class RoomEventOpenUser extends RoomEvent {
   List<Object> get props => [userView];
 
 }
+
+class RoomEventRemove extends RoomEvent {}
+
+class RoomEventAddNew extends RoomEvent {}
+
+class RoomEventSubmit extends RoomEvent {
+  final String? roomName;
+
+  RoomEventSubmit(this.roomName);
+
+}

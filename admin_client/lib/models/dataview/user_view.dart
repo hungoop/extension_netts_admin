@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 
 class UserView {
   final UserRes res;
+  int roomID;
 
   bool choose;
 
-  UserView(this.res, {this.choose = false});
+  UserView(this.res, {this.choose = false, this.roomID = -1});
 
 
   String title(){

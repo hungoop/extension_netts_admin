@@ -21,7 +21,7 @@ class ZoneStateFailure extends ZoneState {
 }
 
 class ZoneStateSuccess extends ZoneState {
-  final ZoneView dataView;
+  final ZoneView? dataView;
   final List<UserView> userViews;
   final List<RoomView> roomViews;
 
@@ -43,7 +43,16 @@ class ZoneStateSuccess extends ZoneState {
     );
   }
 
-
 }
 
 class ZoneStateLoading extends ZoneState {}
+
+class ZoneStateWaitingAdd extends ZoneStateSuccess {
+
+  ZoneStateWaitingAdd({
+      ZoneView? dataView,
+      required List<UserView> userViews,
+      required List<RoomView> roomViews
+  }) : super(dataView, userViews, roomViews);
+
+}

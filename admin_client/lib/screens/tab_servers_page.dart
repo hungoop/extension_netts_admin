@@ -1,3 +1,4 @@
+import 'package:admin_client/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
@@ -14,25 +15,28 @@ class TabServersPage extends StatefulWidget {
 }
 
 class _TabServersPage extends State<TabServersPage> {
-  late TabServersBloc lobbyBloc;
+  late TabServersBloc serverBloc;
   
   @override
   void initState() {
     super.initState();
 
-    lobbyBloc = BlocProvider.of<TabServersBloc>(context);
+    serverBloc = BlocProvider.of<TabServersBloc>(context);
   }
   
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Servers'),
+      ),
       body: SafeArea(
-        child: BlocBuilder<TabServersBloc, TabLobbyState> (
+        child: BlocBuilder<TabServersBloc, TabServerState> (
             builder: (context, lobbyState) {
               List<ZoneConfigView> dataViews = [];
 
-              if(lobbyState is TabLobbyStateSuccess){
+              if(lobbyState is TabServersStateSuccess){
                 dataViews = lobbyState.views;
               }
 
@@ -48,20 +52,22 @@ class _TabServersPage extends State<TabServersPage> {
                   ],
                   if(dataViews.isNotEmpty)...[
                     Expanded(
-                      child:
-                        ListView.builder(
-                          itemBuilder: (BuildContext buildContext, int index){
-                            if (index >= dataViews.length) {
-                              return Center(
-                                child: Text(AppLanguage().translator(LanguageKeys.LOADING_DATA)),
-                              );
-                            } else {
-                              var bif = dataViews[index];
-                              return _createRoomItem(bif);
-                            }
-                          },
-                          itemCount: dataViews.length,
-                        )
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                            itemBuilder: (BuildContext buildContext, int index){
+                              if (index >= dataViews.length) {
+                                return Center(
+                                  child: Text(AppLanguage().translator(LanguageKeys.LOADING_DATA)),
+                                );
+                              } else {
+                                var bif = dataViews[index];
+                                return _createRoomItem(bif);
+                              }
+                            },
+                            itemCount: dataViews.length,
+                          ),
+                        onRefresh: downloadEvents,
+                      )
                     )
                   ]
                 ],
@@ -72,12 +78,17 @@ class _TabServersPage extends State<TabServersPage> {
     );
   }
 
+  Future<void> downloadEvents() async {
+    UtilLogger.log('downloadEvents', 'downloadEvents');
+    serverBloc.add(TabServersEventFetched());
+  }
+
   Widget _createRoomItem(ZoneConfigView view){
     return AppListTitle(
         title: view.title(),
         subtitle: view.subTitle(),
         onPressed: (){
-          lobbyBloc.add(TabServersEventGoToZone(view.res));
+          serverBloc.add(TabServersEventGoToZone(view.res));
         },
     );
   }

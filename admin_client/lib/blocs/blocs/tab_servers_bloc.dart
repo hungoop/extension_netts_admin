@@ -7,18 +7,18 @@ import 'package:admin_client/models/models.dart';
 import 'package:admin_client/repository/repository.dart';
 import 'package:admin_client/utils/utils.dart';
 
-class TabServersBloc extends Bloc<TabServersEvent, TabLobbyState> {
+class TabServersBloc extends Bloc<TabServersEvent, TabServerState> {
   late ZoneConfigsModel zoneConfigsModel;
 
-  TabServersBloc() : super(TabLobbyStateInitial());
+  TabServersBloc() : super(TabServersStateInitial());
 
   @override
-  Stream<TabLobbyState> mapEventToState(TabServersEvent event) async* {
+  Stream<TabServerState> mapEventToState(TabServersEvent event) async* {
     var currState = state;
 
     try {
       if(event is TabServersEventFetched) {
-        if(currState is TabLobbyStateInitial){
+        if(currState is TabServersStateInitial){
           initWSListening();
           zoneConfigsModel = ZoneConfigsModel.fromRes([]);
         }
@@ -26,10 +26,10 @@ class TabServersBloc extends Bloc<TabServersEvent, TabLobbyState> {
       else if(event is TabServersEventZoneList){
         zoneConfigsModel = ZoneConfigsModel.fromRes(event.lst);
 
-        yield TabLobbyStateSuccess(zoneConfigsModel.dataViews);
+        yield TabServersStateSuccess(zoneConfigsModel.dataViews);
       }
       else if(event is TabServersEventGoToZone){
-        if(currState is TabLobbyStateSuccess){
+        if(currState is TabServersStateSuccess){
           RouteGenerator.pushNamed(
               ScreenRoutes.OPEN_ZONE,
               arguments: event.res
@@ -40,10 +40,10 @@ class TabServersBloc extends Bloc<TabServersEvent, TabLobbyState> {
 
     } catch (ex, stacktrace) {
       if(ex is BaseChatException){
-        yield TabLobbyStateFailure(error: ex.toString());
+        yield TabServersStateFailure(error: ex.toString());
       }
       else {
-        yield TabLobbyStateFailure(
+        yield TabServersStateFailure(
             error: AppLanguage().translator(
                 LanguageKeys.CONNECT_SERVER_FAILRURE
             )

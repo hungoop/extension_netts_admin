@@ -23,8 +23,8 @@ class DataPackage {
     return data as List;
   }
 
-  List<dynamic> dataRoadMap() {
-    return dataToJson()["roadMap"] as List;
+  dynamic dataExtensionData() {
+    return dataToJson()["EXTENSION"];
   }
 
   DataReceiveException getException(){

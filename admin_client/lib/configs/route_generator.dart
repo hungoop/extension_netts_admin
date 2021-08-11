@@ -1,4 +1,5 @@
 
+import 'package:admin_client/blocs/blocs/ext_manager_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
@@ -149,9 +150,27 @@ class RouteGenerator {
 
         return _errorRoute(settings);
       }
+      case ScreenRoutes.ADD_ROOM: {
+        var res = settings.arguments;
+        if(res is RoomRes){
+          return MaterialPageRoute(
+              settings: settings,
+              builder: (_) {
+                return BlocProvider<RoomBloc>(
+                  create: (context) {
+                    return RoomBloc(res)
+                      ..add(RoomEventAddNew());
+                  },
+                  child: RoomDetailPage(),
+                );
+              });
+        }
+
+        return _errorRoute(settings);
+      }
       case ScreenRoutes.OPEN_USER: {
         var res = settings.arguments;
-        if(res is UserRes){
+        if(res is UserView){
           return MaterialPageRoute(
               settings: settings,
               builder: (_) {
@@ -161,6 +180,24 @@ class RouteGenerator {
                       ..add(UserEventFetched());
                   },
                   child: UserDetailPage(),
+                );
+              });
+        }
+
+        return _errorRoute(settings);
+      }
+      case ScreenRoutes.OPEN_EXT: {
+        var res = settings.arguments;
+        if(res is ZoneRes){
+          return MaterialPageRoute(
+              settings: settings,
+              builder: (_) {
+                return BlocProvider<ExtManagerBloc>(
+                  create: (context) {
+                    return ExtManagerBloc(res)
+                      ..add(ExtEventFetched());
+                  },
+                  child: ExtManagerPage(),
                 );
               });
         }

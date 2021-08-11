@@ -1,3 +1,5 @@
+import 'package:admin_client/configs/configs.dart';
+import 'package:admin_client/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
@@ -14,13 +16,21 @@ class RoomDetailPage extends StatefulWidget {
 }
 
 class _RoomDetailPage extends State<RoomDetailPage> {
-  late RoomBloc _playGameBloc;
+  late RoomBloc _roomBloc;
+  final txtNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    _playGameBloc = BlocProvider.of<RoomBloc>(context);
+    _roomBloc = BlocProvider.of<RoomBloc>(context);
+
+    txtNameController.addListener(() {
+      //if (_createRoomBloc.state is CreateRoomStateRepair){
+        print('on change CreateRoomStateRepair ${txtNameController.text}');
+      //}
+    });
+
   }
 
   @override
@@ -34,6 +44,10 @@ class _RoomDetailPage extends State<RoomDetailPage> {
             builder: (context, gameState) {
               RoomView? view;
               List<UserView> userViews = [];
+
+              if(gameState is RoomStateAddNew) {
+                return _addNewRoom();
+              }
 
               if(gameState is RoomStateSuccess) {
                 view = gameState.dataView;
@@ -49,9 +63,25 @@ class _RoomDetailPage extends State<RoomDetailPage> {
                   if(view != null)...[
                     Text('Room ${view.subTitle()}'),
                   ],
+                  if(view != null)...[
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppButton(
+                          'Remove',
+                          icon: Icon(Icons.run_circle_outlined) ,
+                          onPressed: (){
+                            _roomBloc.add(RoomEventRemove());
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                   if(userViews.isNotEmpty)...[
                     Expanded(
-                        child: ListView.builder(
+                        child: RefreshIndicator(
+                          onRefresh: downloadEvents,
+                          child: ListView.builder(
                           itemBuilder: (BuildContext buildContext, int index){
                             if (index >= userViews.length) {
                               return Center(
@@ -64,6 +94,7 @@ class _RoomDetailPage extends State<RoomDetailPage> {
                             }
                           },
                           itemCount: userViews.length,
+                        ),
                         )
                     )
                   ]
@@ -75,13 +106,49 @@ class _RoomDetailPage extends State<RoomDetailPage> {
     );
   }
 
+  Future<void> downloadEvents() async {
+    UtilLogger.log('downloadEvents', 'downloadEvents');
+    _roomBloc.add(RoomEventFetched());
+  }
+
   Widget _createUserItem(UserView view){
     return AppListTitle(
       title: view.title(),
       subtitle: view.subTitle(),
       onPressed: (){
-        _playGameBloc.add(RoomEventOpenUser(view));
+        _roomBloc.add(RoomEventOpenUser(view));
       },
     );
   }
+
+  Widget _addNewRoom(){
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(Application.PADDING_ALL),
+          child: AppTextInput(
+            maxLines: 1,
+            maxLength: 30,
+            controller: txtNameController,
+            labelText: AppLanguage().translator("Room name"),
+            hintText: AppLanguage().translator("Input room name"),
+            keyboardType: TextInputType.text,
+            //validator: (_){
+            //return isValidIdentification ? null : Languages.INVALID_TELEPHONE_FORMAT;
+            //},
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16),
+          child: AppButton(
+            AppLanguage().translator(LanguageKeys.AGREE_TEXT_ALERT),
+            onPressed: () async {
+              _roomBloc.add(RoomEventSubmit(txtNameController.text));
+            },
+          ),
+        )
+      ],
+    );
+  }
+
 }

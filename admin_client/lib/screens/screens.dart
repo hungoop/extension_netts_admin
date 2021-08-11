@@ -12,3 +12,4 @@ export 'theme_option_page.dart';
 export 'zone_page.dart';
 export 'room_detail_page.dart';
 export 'user_detail_page.dart';
+export 'ext_manager_page.dart';

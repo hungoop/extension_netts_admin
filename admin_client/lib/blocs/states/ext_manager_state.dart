@@ -2,14 +2,14 @@ import 'package:admin_client/language/languages.dart';
 import 'package:admin_client/models/models.dart';
 import 'package:admin_client/utils/utils.dart';
 
-abstract class UserState {}
+abstract class ExtState {}
 
-class UserStateInitial extends UserState {}
+class ExtStateInitial extends ExtState {}
 
-class UserStateFailure extends UserState {
+class ExtStateFailure extends ExtState {
   final String error;
 
-  UserStateFailure({required this.error});
+  ExtStateFailure({required this.error});
 
   String getErrorMsg(){
     if (!Utils.checkDataEmpty(error)){
@@ -20,21 +20,21 @@ class UserStateFailure extends UserState {
 
 }
 
-class UserStateSuccess extends UserState {
-  final UserView dataView;
+class ExtStateSuccess extends ExtState {
+  final ExtView dataView;
 
-  UserStateSuccess(
+  ExtStateSuccess(
       this.dataView,
   );
 
-  UserStateSuccess cloneWith({
-    UserView? dataView,
-    List<UserView>? userViews,
+  ExtStateSuccess cloneWith({
+    ExtView? dataView,
   }){
-    return UserStateSuccess(
+    return ExtStateSuccess(
       dataView ?? this.dataView,
     );
   }
 
+
 }
-class UserStateLoading extends UserState {}
+class ExtStateLoading extends ExtState {}

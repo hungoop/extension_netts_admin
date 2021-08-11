@@ -47,6 +47,13 @@ class _UserDetailPage extends State<UserDetailPage> {
               );
             }),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          _userBloc.add(UserEventDelete());
+        },
+        tooltip: 'Delete',
+        child: Icon(Icons.delete_forever_outlined),
+      ),
     );
   }
 }

@@ -12,3 +12,4 @@ export 'tab_servers_state.dart';
 export 'room_state.dart';
 export 'zone_state.dart';
 export 'user_state.dart';
+export 'ext_manager_state.dart';

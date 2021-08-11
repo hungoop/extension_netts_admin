@@ -7,91 +7,78 @@ import 'package:admin_client/models/models.dart';
 import 'package:admin_client/repository/repository.dart';
 import 'package:admin_client/utils/util_logger.dart';
 
-class RoomBloc extends Bloc<RoomEvent, RoomState> {
-  RoomRes res;
-  late UserListModel userListModel;
+class ExtManagerBloc extends Bloc<ExtEvent, ExtState> {
+  ZoneRes res;
 
-  RoomBloc(this.res) : super(RoomStateInitial());
+  ExtManagerBloc(this.res) : super(ExtStateInitial());
 
   @override
-  Stream<RoomState> mapEventToState(RoomEvent event) async* {
+  Stream<ExtState> mapEventToState(ExtEvent event) async* {
     var currState = state;
 
     try {
-      if(event is RoomEventFetched) {
-        if(currState is RoomStateInitial){
+      if(event is ExtEventFetched) {
+        if(currState is ExtStateInitial){
           initWSListening();
-          userListModel = UserListModel.fromRes([]);
+
+          getZoneInfo();
         }
 
-        getUserInRoom();
-        yield RoomStateSuccess(
-            RoomView(res),
-            userListModel.dataViews,
+        //yield ExtStateSuccess(
+        //  ExtView(res),
+        //);
+      }
+      else if(event is ExtEventUpdateRes){
+        //if(currState is ExtStateSuccess){
+
+        yield ExtStateSuccess(
+          ExtView(event.res),
         );
+        //}
       }
-      else if(event is RoomEventAddNew){
-        if(currState is RoomStateInitial){
-          initWSListening();
-          userListModel = UserListModel.fromRes([]);
-        }
-
-        yield RoomStateAddNew();
-      }
-      else if(event is RoomEventUserList){
-        if(currState is RoomStateSuccess){
-          userListModel = UserListModel.fromRes(event.lst);
-
-          yield currState.cloneWith(
-              userViews: userListModel.dataViews
-          );
-        }
-      }
-      else if(event is RoomEventOpenUser){
-        if(currState is RoomStateSuccess){
-          UserView user = event.userView;
-          user.roomID = res.rID;
-          RouteGenerator.pushNamed(
-              ScreenRoutes.OPEN_USER,
-              arguments: user
-          );
-        }
-
-      }
-      else if(event is RoomEventRemove){
-        if(currState is RoomStateSuccess){
+      else if(event is ExtEventStop){
+        if(currState is ExtStateSuccess){
           var mes = {};
           mes["zn"] = res.zName;
-          mes["ri"] = res.rID;
           Application.chatSocket.sendExtData(
-              CMD.ROOM_REMOVE, mes
+              CMD.EXT_STOP, mes
           );
-
-          UtilLogger.log('ROOM_REMOVE', '$mes');
+          UtilLogger.log('EXT_STOP', '$mes');
 
           RouteGenerator.pop();
         }
       }
-      else if(event is RoomEventSubmit){
-        if(currState is RoomStateAddNew){
+      else if(event is ExtEventStart){
+        if(currState is ExtStateSuccess){
           var mes = {};
           mes["zn"] = res.zName;
-          mes["rn"] = event.roomName == "" ? res.rName : event.roomName;
           Application.chatSocket.sendExtData(
-              CMD.ROOM_ADD, mes
+              CMD.EXT_START, mes
           );
-
-          UtilLogger.log('ROOM_ADD', '$mes');
+          UtilLogger.log('EXT_START', '$mes');
 
           RouteGenerator.pop();
         }
       }
+      else if(event is ExtEventReload){
+        if(currState is ExtStateSuccess){
+          var mes = {};
+          mes["sn"] = res.xmlZoneName();
+          Application.chatSocket.sendExtData(
+              CMD.EXT_RELOAD, mes
+          );
+          UtilLogger.log('EXT_RELOAD', '$mes');
+
+          RouteGenerator.pop();
+        }
+      }
+
     } catch (ex, stacktrace) {
       if(ex is BaseChatException){
-        yield RoomStateFailure(error: ex.toString());
+        yield ExtStateFailure(error: ex.toString());
       }
       else {
-        yield RoomStateFailure(
+        yield ExtStateFailure(
             error: AppLanguage().translator(
                 LanguageKeys.CONNECT_SERVER_FAILRURE
             )
@@ -112,15 +99,13 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
     return super.close();
   }
 
-  void getUserInRoom(){
+  void getZoneInfo(){
     var mes = {};
     mes["zn"] = res.zName;
-    mes["ri"] = res.rID;
     Application.chatSocket.sendExtData(
-        CMD.USER_LIST, mes
+        CMD.ZONE_INFO, mes
     );
-
-    UtilLogger.log('getUserInRoom ${CMD.USER_LIST}', '$mes');
+    UtilLogger.log('ZONE_INFO', '$mes');
   }
 
   void initWSListening(){
@@ -135,19 +120,23 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
 
   _onExtMessageReceived(WsExtensionMessage event) async {
     switch(event.cmd) {
-      case CMD.USER_LIST:{
+      case CMD.ZONE_INFO:{
         DataPackage data = DataPackage.fromJson(event.data);
 
         if(data.isOK(iSuccess: 0)){
-          List<UserRes> lst = UserListModel.parseRes(data);
-          this.add(RoomEventUserList(lst));
+          ExtRes extRes = ExtRes.fromJson(
+              res.zID,
+              res.zName,
+              data.dataExtensionData()
+          );
+          this.add(ExtEventUpdateRes(extRes));
         }
       }
       break;
       default:{
-        UtilLogger.log(
-            'TTT EXT ${event.cmd}', 'hide data'
-        );
+        //UtilLogger.log(
+            //'TTT EXT ${event.cmd}', 'hide data'
+        //);
       }
     }
   }

@@ -66,4 +66,6 @@ class LanguageKeys {
   static const String CHANGE_LANGUAGE_TEXT        = 'Change language';
   static const String SEARCH_BOX_TEXT             = 'Search';
 
+  static const String DELETE_BTN_TEXT             = 'Delete';
+
 }

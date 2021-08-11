@@ -4,3 +4,4 @@ export 'position_view.dart';
 export 'zone_config_view.dart';
 export 'session_view.dart';
 export 'zone_view.dart';
+export 'ext_view.dart';

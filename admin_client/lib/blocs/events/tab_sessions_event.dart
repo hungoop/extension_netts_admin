@@ -4,16 +4,23 @@ abstract class TabSessionsEvent{}
 
 class TabSessionsEventFetched extends TabSessionsEvent {}
 
-class TabSessionsEventUserList extends TabSessionsEvent {
+class TabSessionsEventUpdateLst extends TabSessionsEvent {
   List<SessionRes> lst;
 
-  TabSessionsEventUserList(this.lst);
+  TabSessionsEventUpdateLst(this.lst);
 
 }
 
-class TabSessionsEventJoinRoom extends TabSessionsEvent {
+class TabSessionsEventSelected extends TabSessionsEvent {
   SessionRes res;
 
-  TabSessionsEventJoinRoom(this.res);
+  TabSessionsEventSelected(this.res);
+
+}
+
+class TabSessionsEventDelete extends TabSessionsEvent {
+  SessionRes res;
+
+  TabSessionsEventDelete(this.res);
 
 }

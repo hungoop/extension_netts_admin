@@ -19,15 +19,17 @@ class ZoneEventUpdateUsers extends ZoneEvent {
 
 }
 
-class ZoneEventZoneInfo extends ZoneEvent {
+class ZoneEventUpdateInfo extends ZoneEvent {
   final ZoneRes res;
   final List<RoomRes> rooms;
 
-  ZoneEventZoneInfo(this.res , this.rooms);
+  ZoneEventUpdateInfo(this.res , this.rooms);
 
   List<Object> get props => [res, rooms];
 
 }
+
+class ZoneEventNotExist extends ZoneEvent {}
 
 class ZoneEventRoomChoose extends ZoneEvent {
   final RoomView room;
@@ -36,4 +38,32 @@ class ZoneEventRoomChoose extends ZoneEvent {
 
   List<Object> get props => [room];
 
+}
+
+class ZoneEventRemove extends ZoneEvent {
+  final ZoneView view;
+
+  ZoneEventRemove(this.view);
+
+  List<Object> get props => [view];
+
+}
+
+class ZoneEventAdd extends ZoneEvent {}
+
+class ZoneEventManager extends ZoneEvent {
+  final ZoneView view;
+
+  ZoneEventManager(this.view);
+
+  List<Object> get props => [view];
+
+}
+
+class ZoneEventNewRoom extends ZoneEvent {
+  final ZoneView view;
+
+  ZoneEventNewRoom(this.view);
+
+  List<Object> get props => [view];
 }

@@ -7,42 +7,49 @@ import 'package:admin_client/models/models.dart';
 import 'package:admin_client/repository/repository.dart';
 import 'package:admin_client/utils/utils.dart';
 
-class TabSessionsBloc extends Bloc<TabSessionsEvent, TabUserState> {
+class TabSessionsBloc extends Bloc<TabSessionsEvent, TabSessionsState> {
   late SessionListModel sessionListModel;
 
-  TabSessionsBloc() : super(TabUserStateInitial());
+  TabSessionsBloc() : super(TabSessionsStateInitial());
 
   @override
-  Stream<TabUserState> mapEventToState(TabSessionsEvent event) async* {
+  Stream<TabSessionsState> mapEventToState(TabSessionsEvent event) async* {
     var currState = state;
 
     try {
       if(event is TabSessionsEventFetched) {
-        if(currState is TabUserStateInitial){
+        if(currState is TabSessionsStateInitial){
           initWSListening();
           sessionListModel = SessionListModel.fromRes([]);
         }
       }
-      else if(event is TabSessionsEventUserList){
+      else if(event is TabSessionsEventUpdateLst){
         sessionListModel = SessionListModel.fromRes(event.lst);
 
-        yield TabUserStateSuccess(sessionListModel.dataViews);
+        yield TabSessionsStateSuccess(sessionListModel.dataViews);
       }
-      else if(event is TabSessionsEventJoinRoom){
-        if(currState is TabLobbyStateSuccess){
-          RouteGenerator.pushNamed(
-              ScreenRoutes.OPEN_ZONE,
-              arguments: event.res
-          );
-        }
+      else if(event is TabSessionsEventSelected){
 
+      }
+      else if(event is TabSessionsEventDelete){
+        if(currState is TabSessionsStateSuccess){
+          var mes = {};
+          mes["zn"] = event.res.zoneName;
+          mes["si"] = event.res.sID;
+          Application.chatSocket.sendExtData(
+              CMD.SESSION_DISCONNECT, mes
+          );
+
+          UtilLogger.log('SESSION_DISCONNECT', '$mes');
+        }
       }
 
     } catch (ex, stacktrace) {
       if(ex is BaseChatException){
-        yield TabUserStateFailure(error: ex.toString());
-      } else {
-        yield TabUserStateFailure(
+        yield TabSessionsStateFailure(error: ex.toString());
+      }
+      else {
+        yield TabSessionsStateFailure(
             error: AppLanguage().translator(
                 LanguageKeys.CONNECT_SERVER_FAILRURE
             )
@@ -78,12 +85,10 @@ class TabSessionsBloc extends Bloc<TabSessionsEvent, TabUserState> {
       case CMD.SESSION_LIST:{
         DataPackage data = DataPackage.fromJson(event.data);
 
-        //UtilLogger.log('SESSION_LIST', '$data');
-
         if(data.isOK(iSuccess: 0)){
           List<SessionRes> lst = SessionListModel.parseRes(data);
 
-          this.add(TabSessionsEventUserList(lst));
+          this.add(TabSessionsEventUpdateLst(lst));
         }
       }
       break;

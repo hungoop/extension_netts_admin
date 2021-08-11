@@ -39,6 +39,8 @@ class RoomStateSuccess extends RoomState {
     );
   }
 
-
 }
+
 class RoomStateLoading extends RoomState {}
+
+class RoomStateAddNew extends RoomState {}

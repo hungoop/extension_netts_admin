@@ -1,3 +1,4 @@
+import 'package:admin_client/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
 import 'package:admin_client/configs/configs.dart';
@@ -24,9 +25,10 @@ class ZoneBloc extends Bloc<ZoneEvent, ZoneState> {
           initWSListening();
           userListModel = UserListModel.fromRes([]);
           roomLstOfZone = RoomListModel.fromRes([]);
-          getZoneInfo();
-          getUserInZone();
         }
+
+        getZoneInfo();
+        getUserInZone();
       }
       else if(event is ZoneEventGetUsers){
         if(currState is ZoneStateSuccess){
@@ -42,8 +44,8 @@ class ZoneBloc extends Bloc<ZoneEvent, ZoneState> {
           );
         }
       }
-      else if(event is ZoneEventZoneInfo){
-        if(currState is ZoneStateInitial){
+      else if(event is ZoneEventUpdateInfo){
+        //if(currState is ZoneStateInitial){
           roomLstOfZone = RoomListModel.fromRes(event.rooms);
           yield ZoneStateSuccess(
               ZoneView(event.res),
@@ -51,17 +53,67 @@ class ZoneBloc extends Bloc<ZoneEvent, ZoneState> {
               roomLstOfZone.dataViews
           );
 
-        }
+        //}
       }
       else if(event is ZoneEventRoomChoose){
         if(currState is ZoneStateSuccess){
-
           RouteGenerator.pushNamed(
               ScreenRoutes.OPEN_ROOM,
               arguments: event.room.res
           );
         }
+      }
+      else if(event is ZoneEventRemove){
+        if(currState is ZoneStateSuccess){
+          var mes = {};
+          mes["zn"] = server.zoneName();
+          Application.chatSocket.sendExtData(
+              CMD.ZONE_REMOVE, mes
+          );
+          UtilLogger.log('ZONE_REMOVE', '$mes');
 
+          RouteGenerator.pop();
+        }
+      }
+      else if(event is ZoneEventAdd){
+        if(currState is ZoneStateWaitingAdd){
+          var mes = {};
+          mes["sn"] = server.zName;
+          Application.chatSocket.sendExtData(
+              CMD.ZONE_ADD, mes
+          );
+          UtilLogger.log('ZONE_ADD', '$mes');
+        }
+      }
+      else if(event is ZoneEventManager){
+        if(currState is ZoneStateSuccess){
+          ZoneRes? res = currState.dataView?.res;
+          if(res != null){
+            RouteGenerator.pushNamed(
+                ScreenRoutes.OPEN_EXT,
+                arguments: res
+            );
+          }
+        }
+      }
+      else if(event is ZoneEventNewRoom){
+        if(currState is ZoneStateSuccess){
+          ZoneRes? res = currState.dataView?.res;
+          if(res != null){
+            RouteGenerator.pushNamed(
+                ScreenRoutes.ADD_ROOM,
+                arguments: RoomRes.newRes(res.zName)
+            );
+          }
+        }
+      }
+      else if(event is ZoneEventNotExist){
+        if(currState is ZoneStateInitial){
+          yield ZoneStateWaitingAdd(
+            userViews: [],
+            roomViews: []
+          );
+        }
       }
     } catch (ex, stacktrace) {
       if(ex is BaseChatException){
@@ -132,12 +184,17 @@ class ZoneBloc extends Bloc<ZoneEvent, ZoneState> {
       case CMD.ZONE_INFO:{
         DataPackage data = DataPackage.fromJson(event.data);
 
+        UtilLogger.log('ZONE_INFO', '${data.data}');
+
         if(data.isOK(iSuccess: 0)){
           ZoneRes zoneRes = ZoneRes.fromJson(data.dataToJson());
 
           List<RoomRes> lst = RoomListModel.parseResFromJson(data);
 
-          this.add(ZoneEventZoneInfo(zoneRes, lst));
+          this.add(ZoneEventUpdateInfo(zoneRes, lst));
+        }
+        else {
+          this.add(ZoneEventNotExist());
         }
       }
       break;

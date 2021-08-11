@@ -1,9 +1,11 @@
+import 'package:admin_client/utils/util_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
 import 'package:admin_client/language/languages.dart';
 import 'package:admin_client/models/models.dart';
 import 'package:admin_client/screens/screens.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TabSessionsPage extends StatefulWidget {
   @override
@@ -14,23 +16,27 @@ class TabSessionsPage extends StatefulWidget {
 }
 
 class _TabSessionsPage extends State<TabSessionsPage> {
-  late TabSessionsBloc _tabUserBloc;
+  late TabSessionsBloc _tabSessionsBloc;
+  final SlidableController slidableController = SlidableController();
 
   @override
   void initState() {
-    _tabUserBloc = BlocProvider.of<TabSessionsBloc>(context);
+    _tabSessionsBloc = BlocProvider.of<TabSessionsBloc>(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Connections'),
+      ),
       body: SafeArea(
-        child: BlocBuilder<TabSessionsBloc, TabUserState> (
+        child: BlocBuilder<TabSessionsBloc, TabSessionsState> (
             builder: (context, userState) {
               List<SessionView> dataViews = [];
 
-              if(userState is TabUserStateSuccess){
+              if(userState is TabSessionsStateSuccess){
                 dataViews = userState.views;
               }
 
@@ -40,25 +46,28 @@ class _TabSessionsPage extends State<TabSessionsPage> {
                   if(dataViews.isEmpty)...[
                     Center(
                       child: Text(
-                          'User - data not found!'
+                          'data not found!'
                       ),
                     )
                   ],
                   if(dataViews.isNotEmpty)...[
                     Expanded(
-                        child:
-                        ListView.builder(
-                          itemBuilder: (BuildContext buildContext, int index){
-                            if (index >= dataViews.length) {
-                              return Center(
-                                child: Text(AppLanguage().translator(LanguageKeys.LOADING_DATA)),
-                              );
-                            } else {
-                              var bif = dataViews[index];
-                              return _createUserItem(bif);
-                            }
-                          },
-                          itemCount: dataViews.length,
+                        child: RefreshIndicator(
+                          onRefresh: downloadEvents,
+                          child: ListView.builder(
+                            itemBuilder: (BuildContext buildContext, int index){
+                              if (index >= dataViews.length) {
+                                return Center(
+                                  child: Text(AppLanguage().translator(LanguageKeys.LOADING_DATA)),
+                                );
+                              } else {
+                                var bif = dataViews[index];
+                                return _createUserItem(bif);
+                              }
+                            },
+                            itemCount: dataViews.length,
+
+                          ),
                         )
                     )
                   ]
@@ -71,13 +80,40 @@ class _TabSessionsPage extends State<TabSessionsPage> {
 
   }
 
+  Future<void> downloadEvents() async {
+    UtilLogger.log('downloadEvents', 'downloadEvents');
+    _tabSessionsBloc.add(TabSessionsEventFetched());
+  }
+
   Widget _createUserItem(SessionView view){
-    return AppListTitle(
-      title: view.title(),
-      subtitle: view.subTitle(),
-      onPressed: (){
-        _tabUserBloc.add(TabSessionsEventJoinRoom(view.res));
-      },
+    final Color color = Theme.of(context).dividerColor;
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.25,
+      controller: slidableController,
+      child: Container(
+          padding: EdgeInsets.zero,
+          child: Theme(
+            data: Theme.of(context).copyWith(dividerColor: color),
+            child: AppListTitle(
+              title: view.title(),
+              subtitle: view.subTitle(),
+              onPressed: (){
+                _tabSessionsBloc.add(TabSessionsEventSelected(view.res));
+              },
+            ),
+          )
+      ),
+      actions: <Widget>[
+        IconSlideAction(
+          caption: AppLanguage().translator(LanguageKeys.DELETE_BTN_TEXT),
+          color: Colors.red,
+          icon: Icons.delete,
+          onTap: () {
+            _tabSessionsBloc.add(TabSessionsEventDelete(view.res));
+          },
+        ),
+      ],
     );
   }
 

@@ -26,6 +26,7 @@ class UserRes {
   String uName;
   String sessionID;
   int playerID;
+  String zoneName;
   List<dynamic> joinRoons;
   bool isConnected;
   bool isJoining;
@@ -37,6 +38,7 @@ class UserRes {
     required this.uName,
     required this.sessionID,
     required this.playerID,
+    required this.zoneName,
     required this.joinRoons,
     required this.isConnected,
     required this.isJoining,
@@ -50,6 +52,7 @@ class UserRes {
       uName: json["NAME"],
       sessionID: json["SESSION_ID"] ?? "n/a",
       playerID: json["PLAYER_ID"],
+      zoneName: json["ZONE_NAME"],
       joinRoons: json["JOIN_ROOM"],
       isConnected: json["IS_CONNECTED"],
       isJoining: json["IS_JOINING"],
@@ -64,6 +67,7 @@ class UserRes {
     map['NAME'] = this.uName;
     map['SESSION_ID'] = this.sessionID;
     map['PLAYER_ID'] = this.playerID;
+    map['ZONE_NAME'] = this.zoneName;
     map['JOIN_ROOM'] = this.joinRoons;
     map['IS_CONNECTED'] = this.isConnected;
     map['IS_JOINING'] = this.isJoining;
