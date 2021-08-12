@@ -13,3 +13,5 @@ export 'room_state.dart';
 export 'zone_state.dart';
 export 'user_state.dart';
 export 'ext_manager_state.dart';
+export 'server_protocol_state.dart';
+export 'server_property_state.dart';

@@ -19,6 +19,8 @@ class _RoomDetailPage extends State<RoomDetailPage> {
   late RoomBloc _roomBloc;
   final txtNameController = TextEditingController();
 
+  ValueNotifier<int> _valueNotifier = ValueNotifier(0);
+
   @override
   void initState() {
     super.initState();
@@ -26,9 +28,7 @@ class _RoomDetailPage extends State<RoomDetailPage> {
     _roomBloc = BlocProvider.of<RoomBloc>(context);
 
     txtNameController.addListener(() {
-      //if (_createRoomBloc.state is CreateRoomStateRepair){
-        print('on change CreateRoomStateRepair ${txtNameController.text}');
-      //}
+        print('on change ${txtNameController.text}');
     });
 
   }
@@ -54,6 +54,15 @@ class _RoomDetailPage extends State<RoomDetailPage> {
                 userViews = gameState.userViews;
               }
 
+              Future.delayed(Duration(milliseconds: 300), (){
+                if(view != null){
+                  _valueNotifier.value = 1;
+                }
+                else {
+                  _valueNotifier.value = 0;
+                }
+              });
+
               return Column(
                 children: [
                   AppConnectivity(),
@@ -63,24 +72,10 @@ class _RoomDetailPage extends State<RoomDetailPage> {
                   if(view != null)...[
                     Text('Room ${view.subTitle()}'),
                   ],
-                  if(view != null)...[
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppButton(
-                          'Remove',
-                          icon: Icon(Icons.run_circle_outlined) ,
-                          onPressed: (){
-                            _roomBloc.add(RoomEventRemove());
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
                   if(userViews.isNotEmpty)...[
                     Expanded(
                         child: RefreshIndicator(
-                          onRefresh: downloadEvents,
+                          onRefresh: onRefreshEvents,
                           child: ListView.builder(
                           itemBuilder: (BuildContext buildContext, int index){
                             if (index >= userViews.length) {
@@ -100,13 +95,42 @@ class _RoomDetailPage extends State<RoomDetailPage> {
                   ]
                 ],
               );
-
             }),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ValueListenableBuilder(
+                valueListenable: _valueNotifier,
+                builder: (context, int value, Widget? child) {
+                  if(value == 1){
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppButton(
+                          'Remove',
+                          icon: Icon(Icons.delete_forever_outlined) ,
+                          onPressed: (){
+                            _roomBloc.add(RoomEventRemove());
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                  else {
+                    return SizedBox();
+                  }
+                }
+            )
+
+          ],
+        ),
       ),
     );
   }
 
-  Future<void> downloadEvents() async {
+  Future<void> onRefreshEvents() async {
     UtilLogger.log('downloadEvents', 'downloadEvents');
     _roomBloc.add(RoomEventFetched());
   }
@@ -133,9 +157,6 @@ class _RoomDetailPage extends State<RoomDetailPage> {
             labelText: AppLanguage().translator("Room name"),
             hintText: AppLanguage().translator("Input room name"),
             keyboardType: TextInputType.text,
-            //validator: (_){
-            //return isValidIdentification ? null : Languages.INVALID_TELEPHONE_FORMAT;
-            //},
           ),
         ),
         Padding(

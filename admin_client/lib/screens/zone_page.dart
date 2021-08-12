@@ -17,6 +17,7 @@ class ZonePage extends StatefulWidget {
 
 class _ZonePage extends State<ZonePage> {
   late ZoneBloc _zoneBloc;
+  ValueNotifier<int> _valueNotifier = ValueNotifier(0);
 
   @override
   void initState() {
@@ -61,23 +62,21 @@ class _ZonePage extends State<ZonePage> {
                 allowAddZone = true;
               }
 
+              Future.delayed(Duration(milliseconds: 300), (){
+                if(view == null && allowAddZone){
+                  _valueNotifier.value = 1;
+                }
+                else if(view != null) {
+                  _valueNotifier.value = 2;
+                }
+                else {
+                  _valueNotifier.value = 0;
+                }
+              });
+
               return Column(
                 children: [
                   AppConnectivity(),
-                  if(view == null && allowAddZone)...[
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppButton(
-                          'Add',
-                          icon: Icon(Icons.add_circle_rounded) ,
-                          onPressed: (){
-                            _zoneBloc.add(ZoneEventAdd());
-                          },
-                        ),
-                      ],
-                    )
-                  ],
                   if(view != null)...[
                     Column(
                       children: [
@@ -89,34 +88,6 @@ class _ZonePage extends State<ZonePage> {
                         Text('customLogin: ${view.res.customLogin}'),
                         Text('notifyRemoveRoom: ${view.res.notifyRemoveRoom}'),
                         Text('notifyCreateRoom: ${view.res.notifyCreateRoom}'),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            AppButton(
-                              'Remove',
-                              icon: Icon(Icons.do_disturb_on_rounded) ,
-                              onPressed: (){
-                                _zoneBloc.add(ZoneEventRemove(view!));
-                              },
-                            ),
-                            SizedBox(width: 10,),
-                            AppButton(
-                              'Manager',
-                              icon: Icon(Icons.explicit_rounded) ,
-                              onPressed: (){
-                                _zoneBloc.add(ZoneEventManager(view!));
-                              },
-                            ),
-                            SizedBox(width: 10,),
-                            AppButton(
-                              'New Room',
-                              icon: Icon(Icons.room_outlined) ,
-                              onPressed: (){
-                                _zoneBloc.add(ZoneEventNewRoom(view!));
-                              },
-                            ),
-                          ],
-                        )
                       ],
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -147,6 +118,68 @@ class _ZonePage extends State<ZonePage> {
               );
 
             }),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ValueListenableBuilder(
+                valueListenable: _valueNotifier,
+                builder: (context, int value, Widget? child) {
+                  if(value == 1){
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppButton(
+                          'Add',
+                          icon: Icon(Icons.add_circle_rounded) ,
+                          onPressed: (){
+                            _zoneBloc.add(ZoneEventAdd());
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                  else if(value == 2) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppButton(
+                          'Remove',
+                          icon: Icon(Icons.do_disturb_on_rounded) ,
+                          onPressed: (){
+                            _zoneBloc.add(ZoneEventRemove());
+                          },
+                        ),
+                        SizedBox(width: 10,),
+                        AppButton(
+                          'Manager',
+                          icon: Icon(Icons.explicit_rounded) ,
+                          onPressed: (){
+                            _zoneBloc.add(ZoneEventManager());
+                          },
+                        ),
+                        SizedBox(width: 10,),
+                        AppButton(
+                          'New Room',
+                          icon: Icon(Icons.room_outlined) ,
+                          onPressed: (){
+                            _zoneBloc.add(ZoneEventNewRoom());
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                  else {
+                    return Text(
+                      AppLanguage().translator(LanguageKeys.LOADING_DATA)
+                    );
+                  }
+                }
+            )
+
+          ],
+        ),
       ),
     );
   }

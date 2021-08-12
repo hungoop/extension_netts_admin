@@ -4,7 +4,7 @@ export 'entity/entity.dart';
 export 'model_theme.dart';
 export 'room_list_model.dart';
 export 'user_list_model.dart';
-export 'game_ttt_model.dart';
+export 'server_protocol_model.dart';
 export 'zone_configs_model.dart';
 export 'session_list_model.dart';
 export 'zone_detail_model.dart';

@@ -58,7 +58,7 @@ class LanguageKeys {
   static const String APP_CURREN_LANGUAGE         = 'English';
   static const String SETTING_THEME               = 'Theme';
   static const String SETTING_FONT                = 'Font';
-  static const String HELP_SUPPORT_TEXT           = 'Help & Support';
+  static const String HELP_SUPPORT_TEXT           = 'Documentation central';//'Help & Support';
   static const String SETTING_PERMISSION          = 'Setting permission';
   static const String APP_VERSION_STR             = 'Version:';
   static const String CURRENT_LANG                = 'EN';

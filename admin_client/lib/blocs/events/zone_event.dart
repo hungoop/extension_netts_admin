@@ -40,30 +40,10 @@ class ZoneEventRoomChoose extends ZoneEvent {
 
 }
 
-class ZoneEventRemove extends ZoneEvent {
-  final ZoneView view;
-
-  ZoneEventRemove(this.view);
-
-  List<Object> get props => [view];
-
-}
+class ZoneEventRemove extends ZoneEvent {}
 
 class ZoneEventAdd extends ZoneEvent {}
 
-class ZoneEventManager extends ZoneEvent {
-  final ZoneView view;
+class ZoneEventManager extends ZoneEvent {}
 
-  ZoneEventManager(this.view);
-
-  List<Object> get props => [view];
-
-}
-
-class ZoneEventNewRoom extends ZoneEvent {
-  final ZoneView view;
-
-  ZoneEventNewRoom(this.view);
-
-  List<Object> get props => [view];
-}
+class ZoneEventNewRoom extends ZoneEvent {}

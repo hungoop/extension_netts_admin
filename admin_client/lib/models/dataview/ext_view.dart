@@ -24,15 +24,16 @@ class ExtView {
         Text('zID: ${this.res.zID}'),
         Text('zName: ${this.res.zName}'),
         Text('isStopped: ${this.res.isStopped}'),
-        viewMap(this.res.eventHandler),
-        viewMap(this.res.requestHandler),
-        viewMap(this.res.cachedHandlers),
+        viewMap(this.res.eventHandler, title: 'System handler'),
+        viewMap(this.res.requestHandler, title: 'Extension handler'),
+        viewMap(this.res.cachedHandlers, title: 'Cached handlers'),
       ],
     );
   }
 
-  Widget viewMap(Map<String, dynamic> data){
-    return Column(
+  Widget viewMap(Map<String, dynamic> data, {String title = ''}){
+    return ExpansionTile(
+      title: Text('$title'),
       children: data.keys.map((e) {
         return AppListTitle(
           title: '$e',

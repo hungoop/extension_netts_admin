@@ -13,3 +13,5 @@ export 'tab_servers_bloc.dart';
 export 'room_bloc.dart';
 export 'zone_bloc.dart';
 export 'user_bloc.dart';
+export 'server_property_bloc.dart';
+export 'server_protocol_bloc.dart';

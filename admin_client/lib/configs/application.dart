@@ -10,6 +10,8 @@ class Application {
   static String addressWsServer                   = 'ws://192.168.1.3:8722';
   static String zoneGameName                      = 'NETTSAdminZone';
 
+  static String documentURL                       = 'http://docs2x.smartfoxserver.com/';
+
   static String timeZoneName                      = DateTime.now().timeZoneName;
   static int delayTimeConnectFailCall             = 30;
   static int delayTimeCloseScreenCall             = 2;

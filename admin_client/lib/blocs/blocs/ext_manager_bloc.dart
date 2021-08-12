@@ -20,9 +20,9 @@ class ExtManagerBloc extends Bloc<ExtEvent, ExtState> {
       if(event is ExtEventFetched) {
         if(currState is ExtStateInitial){
           initWSListening();
-
-          getZoneInfo();
         }
+
+        getZoneInfo();
 
         //yield ExtStateSuccess(
         //  ExtView(res),

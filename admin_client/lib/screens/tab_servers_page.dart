@@ -1,3 +1,4 @@
+import 'package:admin_client/configs/configs.dart';
 import 'package:admin_client/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +31,29 @@ class _TabServersPage extends State<TabServersPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Servers'),
+        actions: [
+          IconButton(
+            icon: Icon(
+                Icons.code_outlined
+            ),
+            onPressed: (){
+              RouteGenerator.pushNamed(
+                ScreenRoutes.SERVER_PROPERTY
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(
+                Icons.scatter_plot_outlined
+            ),
+            onPressed: (){
+              RouteGenerator.pushNamed(
+                  ScreenRoutes.SERVER_PROTOCOL
+              );
+            },
+          ),
+
+        ],
       ),
       body: SafeArea(
         child: BlocBuilder<TabServersBloc, TabServerState> (

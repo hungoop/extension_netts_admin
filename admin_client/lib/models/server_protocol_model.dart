@@ -21,25 +21,25 @@
 import 'package:admin_client/models/models.dart';
 import 'package:admin_client/repository/repository.dart';
 
-class GameTTTModel {
-  List<PositionView> dataViews;
+class ServerProtocolModel {
+  List<ServerProtocolView> dataViews;
 
-  GameTTTModel(this.dataViews);
+  ServerProtocolModel(this.dataViews);
 
-  factory GameTTTModel.fromRes(List<PositionRes> lst){
-    List<PositionView> temps = lst.map((e) {
-      return PositionView(e);
+  factory ServerProtocolModel.fromRes(List<ServerProtocolRes> lst){
+    List<ServerProtocolView> temps = lst.map((e) {
+      return ServerProtocolView(e);
     }).toList();
 
-    return GameTTTModel(temps);
+    return ServerProtocolModel(temps);
   }
-/*
-  static List<PositionRes> parseRes(DataPackage data){
-    List<PositionRes> lst = data.dataRoadMap().map((e) {
-      return PositionRes.fromJson(e);
+
+  static List<ServerProtocolRes> parseRes(DataPackage data){
+    List<ServerProtocolRes> lst = data.dataToList().map((e) {
+      return ServerProtocolRes.fromJson(e);
     }).toList();
 
     return lst;
-  }*/
+  }
 
 }

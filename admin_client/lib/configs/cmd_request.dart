@@ -17,4 +17,7 @@ class CMD {
   static const String USER_DISCONNECT       = "dis_user";
   static const String SESSION_DISCONNECT    = "dis_session";
 
+  static const String SERVER_PROPERTY       = "config_info";
+  static const String SERVER_PROTOCOL       = "server_info";
+
 }

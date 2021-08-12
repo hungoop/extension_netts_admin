@@ -221,7 +221,7 @@ class _AppSettingAppearance extends State<AppSettingAppearance> {
           ),
           title: AppLanguage().translator(LanguageKeys.HELP_SUPPORT_TEXT),
           onPressed: () {
-            Utils.launchUrlToBrowser(urlOpen: "123.com");
+            Utils.launchUrlToBrowser(urlOpen: Application.documentURL);
           },
           trailing: Row(
             children: <Widget>[

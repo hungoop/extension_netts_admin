@@ -204,6 +204,32 @@ class RouteGenerator {
 
         return _errorRoute(settings);
       }
+      case ScreenRoutes.SERVER_PROPERTY: {
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) {
+              return BlocProvider<ServerPropertyBloc>(
+                create: (context) {
+                  return ServerPropertyBloc()
+                    ..add(ServerPropertyEventFetched());
+                },
+                child: ServerPropertyPage(),
+              );
+            });
+      }
+      case ScreenRoutes.SERVER_PROTOCOL: {
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) {
+              return BlocProvider<ServerProtocolBloc>(
+                create: (context) {
+                  return ServerProtocolBloc()
+                    ..add(ServerProtocolEventFetched());
+                },
+                child: ServerProtocolPage(),
+              );
+            });
+      }
       default:
         return _errorRoute(settings);
     }
