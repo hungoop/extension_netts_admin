@@ -1,4 +1,6 @@
+import 'package:admin_client/configs/configs.dart';
 import 'package:admin_client/models/models.dart';
+import 'package:admin_client/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class UserView {
@@ -15,23 +17,29 @@ class UserView {
   }
 
   String subTitle(){
-  return 'ID:${this.res.uID} - session:${this.res.sessionID}';
+  return '${this.res.uID}';
   }
 
   Widget viewInfo(){
-    return Column(
-      children: [
-        Text('${this.title()}'),
-        Text('${this.subTitle()}'),
-        Text('sessionID: ${this.res.sessionID}'),
-        Text('isLoggedIn: ${this.res.isLoggedIn}'),
-        Text('isConnected: ${this.res.isConnected}'),
-        Text('playerID: ${this.res.playerID}'),
-        Text('joinRoons: ${this.res.joinRoons}'),
-        Text('isJoining: ${this.res.isJoining}'),
-        Text('hashCode: ${this.res.hashCode}'),
-      ],
-    );
+    return Padding(
+          padding: EdgeInsets.all(Application.PADDING_ALL),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppTextField('userName: ${this.title()}'),
+              AppTextField('userID: ${this.subTitle()}'),
+              AppTextField('sessionID: ${this.res.sessionID}'),
+              AppTextField('isLoggedIn: ${this.res.isLoggedIn}'),
+              AppTextField('isConnected: ${this.res.isConnected}'),
+              AppTextField('playerID: ${this.res.playerID}'),
+              AppTextField('joinRoons: ${this.res.joinRoons}'),
+              AppTextField('isJoining: ${this.res.isJoining}'),
+              AppTextField('hashCode: ${this.res.hashCode}'),
+            ],
+          )
+      );
+
   }
 
 }

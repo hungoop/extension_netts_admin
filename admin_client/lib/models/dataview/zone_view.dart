@@ -12,7 +12,7 @@ class ZoneView{
   }
 
   String subTitle(){
-    return 'ID:${this.res.zID} - totalUser:${this.res.totalUser}';
+    return '${this.res.zID}';
   }
 
 }

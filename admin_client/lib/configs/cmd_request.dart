@@ -20,4 +20,6 @@ class CMD {
   static const String SERVER_PROPERTY       = "config_info";
   static const String SERVER_PROTOCOL       = "server_info";
 
+  static const String UPDATE_ACC            = "update_acc_data";
+  static const String UPDATE_BAN            = "update_ban_data";
 }

@@ -22,13 +22,13 @@ class ServerProtocolView {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(
-              '${this.title()}'
+          AppListTitle(
+            title: '${this.title()}',
+            subtitle: '${res.getByKey('startTime')}',
+            border: false,
           ),
-          Text(
-              '${this.subTitle()}'
-          ),
-          viewMap(res.property, title: res.getByKey('startTime'))
+          viewMap(res.property, title: '${this.subTitle()}'),
+          Divider()
         ],
       )
     );

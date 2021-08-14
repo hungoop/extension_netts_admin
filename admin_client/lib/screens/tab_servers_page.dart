@@ -29,6 +29,7 @@ class _TabServersPage extends State<TabServersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerMenuPage(),
       appBar: AppBar(
         title: Text('Servers'),
         actions: [

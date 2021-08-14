@@ -64,13 +64,25 @@ class _RoomDetailPage extends State<RoomDetailPage> {
               });
 
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppConnectivity(),
                   if(view != null)...[
-                    Text('Room ${view.title()}'),
-                  ],
-                  if(view != null)...[
-                    Text('Room ${view.subTitle()}'),
+                    Padding(
+                      padding: EdgeInsets.all(Application.PADDING_ALL),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppTextField('ID: ${view.res.rID}'),
+                          AppTextField('Room name: ${view.res.rName}'),
+                          AppTextField('Zone name: ${view.res.zName}'),
+                          AppTextField('Total usser: ${view.res.uCount}'),
+                          AppTextField('Max spectator: ${view.res.maxSpectator}'),
+                          AppTextField('Max player: ${view.res.maxPlayer}'),
+                          AppTextField('Active: ${view.res.isActive}'),
+                        ],
+                      ),
+                    )
                   ],
                   if(userViews.isNotEmpty)...[
                     Expanded(

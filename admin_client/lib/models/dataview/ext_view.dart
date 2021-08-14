@@ -20,6 +20,7 @@ class ExtView {
 
   Widget viewInfo(){
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('zID: ${this.res.zID}'),
         Text('zName: ${this.res.zName}'),

@@ -1,4 +1,5 @@
 import 'package:admin_client/blocs/blocs/ext_manager_bloc.dart';
+import 'package:admin_client/configs/configs.dart';
 import 'package:admin_client/language/languages.dart';
 import 'package:admin_client/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -56,10 +57,15 @@ class _ExtManagerPage extends State<ExtManagerPage> {
               return RefreshIndicator(
                 child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppConnectivity(),
                         if(view != null)...[
-                          view.viewInfo(),
+                          Padding(
+                            padding: EdgeInsets.all(Application.PADDING_ALL),
+                            child: view.viewInfo(),
+                          )
+
                         ],
                       ],
                     )

@@ -15,3 +15,4 @@ export 'user_detail_page.dart';
 export 'ext_manager_page.dart';
 export 'server_property_page.dart';
 export 'server_protocol_page.dart';
+export 'drawer_menu_page.dart';

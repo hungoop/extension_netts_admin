@@ -1,3 +1,4 @@
+import 'package:admin_client/configs/configs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
@@ -38,6 +39,8 @@ class _UserDetailPage extends State<UserDetailPage> {
               }
 
               return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   AppConnectivity(),
                   if(view != null)...[

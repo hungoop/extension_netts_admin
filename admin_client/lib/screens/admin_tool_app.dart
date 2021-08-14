@@ -100,7 +100,7 @@ class _AdminToolApp extends State<AdminToolApp> {
                             context.localizationDelegates
                         ),
                         supportedLocales: context.supportedLocales,
-                        locale:  AppLanguage.defaultLocale,//AppLanguage.getSupportLocale(AppLanguage.defaultLocale),
+                        locale: AppLanguage.defaultLocale,//AppLanguage.getSupportLocale(AppLanguage.defaultLocale),
                         title: AppLanguage().translator(LanguageKeys.APP_TITLE),
                         onGenerateRoute: RouteGenerator.generateRoute,
                         localeResolutionCallback: (locale, supportedLocales) {

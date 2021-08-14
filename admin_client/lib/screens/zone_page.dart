@@ -53,6 +53,8 @@ class _ZonePage extends State<ZonePage> {
               List<RoomView> roomViews = [];
               bool allowAddZone = false;
 
+              ZoneConfigRes server = _zoneBloc.server;
+
               if(gameState is ZoneStateSuccess) {
                 view = gameState.dataView;
                 roomViews = gameState.roomViews;
@@ -75,23 +77,35 @@ class _ZonePage extends State<ZonePage> {
               });
 
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppConnectivity(),
                   if(view != null)...[
-                    Column(
-                      children: [
-                        Text('${view.title()}'),
-                        Text('${view.subTitle()}'),
-                        Text('maxRoom: ${view.res.maxRoom}'),
-                        Text('totalUser: ${view.res.totalUser}'),
-                        Text('forceLogout: ${view.res.forceLogout}'),
-                        Text('customLogin: ${view.res.customLogin}'),
-                        Text('notifyRemoveRoom: ${view.res.notifyRemoveRoom}'),
-                        Text('notifyCreateRoom: ${view.res.notifyCreateRoom}'),
-                      ],
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                    ),
+                    Padding(
+                      padding: EdgeInsets.all(Application.PADDING_ALL),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          AppTextField('ID: ${view.res.zID}'),
+                          AppTextField('name: ${view.res.zName}'),
+                          AppTextField('maxRoom: ${view.res.maxRoom}'),
+                          AppTextField('totalUser: ${view.res.totalUser}'),
+                          AppTextField('forceLogout: ${view.res.forceLogout}'),
+                          AppTextField('customLogin: ${view.res.customLogin}'),
+                          AppTextField('notifyRemoveRoom: ${view.res.notifyRemoveRoom}'),
+                          AppTextField('notifyCreateRoom: ${view.res.notifyCreateRoom}'),
+                        ],
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      ),
+                    )
+                    
+                  ],
+                  if(view == null)...[
+                    AppListTitle(
+                      title: '${server.zName}',
+                      subtitle: '${server.zPath}',
+                    )
                   ],
                   if(roomViews.isNotEmpty)...[
                     Expanded(
@@ -120,6 +134,8 @@ class _ZonePage extends State<ZonePage> {
             }),
       ),
       bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 4.0,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
