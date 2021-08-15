@@ -27,6 +27,14 @@ class DataPackage {
     return dataToJson()["EXTENSION"];
   }
 
+  List<dynamic> dataAdmins() {
+    return dataToJson()["admins"] as List;
+  }
+
+  List<dynamic> dataUsers() {
+    return dataToJson()["users"] as List;
+  }
+
   DataReceiveException getException(){
     return DataReceiveException(
         code: bitOK,

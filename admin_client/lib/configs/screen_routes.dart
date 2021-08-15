@@ -20,4 +20,9 @@ class ScreenRoutes {
   static const String SERVER_PROTOCOL   = "/server_protocol";
   static const String SERVER_PROPERTY   = "/server_property";
 
+  static const String BAN_MANAGER       = "/ban_manager";
+  static const String ACCOUNT_MANAGER   = "/account_manager";
+
+  static const String RUNTIME_STATISTICS   = "/r_statistics";
+
 }

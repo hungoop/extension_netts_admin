@@ -22,4 +22,6 @@ class CMD {
 
   static const String UPDATE_ACC            = "update_acc_data";
   static const String UPDATE_BAN            = "update_ban_data";
+  static const String R_STATISTICS          = "statistics";
+
 }

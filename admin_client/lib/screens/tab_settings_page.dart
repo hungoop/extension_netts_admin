@@ -136,30 +136,32 @@ class _TabSettingsPage extends State<TabSettingsPage> {
                   thickness: 2,
                   color: Theme.of(context).dividerColor,
                 ),
-                AppListTitle(
-                  title: AppLanguage().translator(
-                      LanguageKeys.SETTING_PERMISSION
-                  ),
-                  icon: Icon(
-                    Icons.perm_device_information_sharp,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  onPressed: (){
-                    UtilPermission.openPermissionAppSettings();
-                  },
-                  border: false,
-                  trailing: Row(
-                    children: <Widget>[
-                      RotatedBox(
-                        quarterTurns: 0,
-                        child: Icon(
-                          Icons.keyboard_arrow_right,
-                          textDirection: TextDirection.ltr,
+                if(!Utils.isWeb())...[
+                  AppListTitle(
+                    title: AppLanguage().translator(
+                        LanguageKeys.SETTING_PERMISSION
+                    ),
+                    icon: Icon(
+                      Icons.perm_device_information_sharp,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onPressed: (){
+                      UtilPermission.openPermissionAppSettings();
+                    },
+                    border: false,
+                    trailing: Row(
+                      children: <Widget>[
+                        RotatedBox(
+                          quarterTurns: 0,
+                          child: Icon(
+                            Icons.keyboard_arrow_right,
+                            textDirection: TextDirection.ltr,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                ],
                 _showUpdateApp(hasNewUpdate),
               ],
             );

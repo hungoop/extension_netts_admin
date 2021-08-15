@@ -16,3 +16,6 @@ export 'ext_manager_page.dart';
 export 'server_property_page.dart';
 export 'server_protocol_page.dart';
 export 'drawer_menu_page.dart';
+export 'account_manager_page.dart';
+export 'ban_manager_page.dart';
+export 'runtime_statistics_page.dart';

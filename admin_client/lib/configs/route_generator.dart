@@ -230,6 +230,48 @@ class RouteGenerator {
               );
             });
       }
+      case ScreenRoutes.BAN_MANAGER: {
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) {
+              return BlocProvider<BanManagerBloc>(
+                create: (context) {
+                  return BanManagerBloc()
+                    ..add(BanManagerEventFetched());
+                },
+                child: BanManagerPage(),
+              );
+            }
+         );
+      }
+      case ScreenRoutes.ACCOUNT_MANAGER: {
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) {
+              return BlocProvider<AccManagerBloc>(
+                create: (context) {
+                  return AccManagerBloc()
+                    ..add(AccManagerEventFetched());
+                },
+                child: AccountManagerPage(),
+              );
+            }
+         );
+      }
+      case ScreenRoutes.RUNTIME_STATISTICS: {
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) {
+              return BlocProvider<RStatisticsBloc>(
+                create: (context) {
+                  return RStatisticsBloc()
+                    ..add(RStatisticsEventFetched());
+                },
+                child: RuntimeStatisticsPage(),
+              );
+            }
+        );
+      }
       default:
         return _errorRoute(settings);
     }

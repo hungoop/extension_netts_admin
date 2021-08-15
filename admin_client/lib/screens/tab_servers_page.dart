@@ -24,8 +24,7 @@ class _TabServersPage extends State<TabServersPage> {
 
     serverBloc = BlocProvider.of<TabServersBloc>(context);
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

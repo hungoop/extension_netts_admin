@@ -25,9 +25,18 @@ class ExtView {
         Text('zID: ${this.res.zID}'),
         Text('zName: ${this.res.zName}'),
         Text('isStopped: ${this.res.isStopped}'),
-        viewMap(this.res.eventHandler, title: 'System handler'),
-        viewMap(this.res.requestHandler, title: 'Extension handler'),
-        viewMap(this.res.cachedHandlers, title: 'Cached handlers'),
+        viewMap(
+            this.res.eventHandler,
+            title: 'System handler (${this.res.eventHandler.length})'
+        ),
+        viewMap(
+            this.res.requestHandler,
+            title: 'Extension handler (${this.res.requestHandler.length})'
+        ),
+        viewMap(
+            this.res.cachedHandlers,
+            title: 'Cached handlers (${this.res.cachedHandlers.length})'
+        ),
       ],
     );
   }

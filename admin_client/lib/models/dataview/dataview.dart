@@ -6,3 +6,6 @@ export 'session_view.dart';
 export 'zone_view.dart';
 export 'ext_view.dart';
 export 'server_property_view.dart';
+export 'ban_view.dart';
+export 'account_view.dart';
+export 'runtime_statistics_view.dart';
