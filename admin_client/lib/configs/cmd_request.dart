@@ -1,6 +1,7 @@
 class CMD {
   static const String MOBILE_APP_CONFIG         = "url_setting_mobile_app.config";
 
+  static const String JWT_TOKEN             = "jwt";
   static const String ZONE_INFO             = "zone_info";
   static const String ZONE_REMOVE           = "remove_zone";
   static const String ZONE_ADD              = "add_zone";

@@ -48,8 +48,9 @@ class UtilLogger {
   ) async{
     if (Application.IS_LOCAL) {
       //if(Utils.isWeb()){
-        //print('$exception: $stack');
+        print('$exception: $stack');
       //} else {
+      /*
         await FirebaseCrashlytics.instance.recordError(
             exception,
             stack,
@@ -57,6 +58,8 @@ class UtilLogger {
             information: information,
             printDetails: printDetails,
             fatal: fatal);
+
+       */
       //}
     }
 

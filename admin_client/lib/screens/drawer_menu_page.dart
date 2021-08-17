@@ -1,3 +1,4 @@
+import 'package:admin_client/blocs/blocs.dart';
 import 'package:admin_client/configs/configs.dart';
 import 'package:admin_client/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,13 @@ class DrawerMenuPage extends StatelessWidget {
               RouteGenerator.pushNamed(
                   ScreenRoutes.ACCOUNT_MANAGER
               );
+            },
+          ),
+          AppListTitle(
+            title: 'Logout',
+            onPressed: () {
+              AppBloc.authBloc.add(OnClear());
+              RouteGenerator.pop();
             },
           ),
           AppListTitle(

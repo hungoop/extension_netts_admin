@@ -123,6 +123,23 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
   _onExtMessageReceived(WsExtensionMessage event) async {
     switch(event.cmd) {
+      case CMD.JWT_TOKEN:{
+        DataPackage data = DataPackage.fromJson(event.data);
+
+        if(data.isOK(iSuccess: 0)){
+          UtilLogger.log(
+              'JWT_TOKEN ${event.cmd}', '${event.data}'
+          );
+
+          LoginStorage? store = LoginStorage.read();
+
+          if(store !=null ){
+            store.updateAndSave(token: data.dataAsString());
+          }
+
+        }
+      }
+      break;
       default:{
         //UtilLogger.log(
         //    'TTT EXT ${event.cmd}', '${event.data}'

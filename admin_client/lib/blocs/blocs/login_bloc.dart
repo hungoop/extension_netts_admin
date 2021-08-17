@@ -1,4 +1,5 @@
 
+import 'package:admin_client/models/models.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
@@ -61,8 +62,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             zone: Application.zoneGameName,
             uname: '${loginEvent.identification}',
             upass: '${loginEvent.password}',
-            param: {}
+            param: {
+              'lt': detectLoginType(
+                  loginEvent.identification,
+                  loginEvent.loginType
+              ).getId(),
+            }
         );
+
+        LoginStorage store = LoginStorage(
+            loginEvent.identification
+        );
+
+        store.save();
+
       }
       else if(loginEvent is LoginEventSuccess){
         yield LoginStateSuccess();

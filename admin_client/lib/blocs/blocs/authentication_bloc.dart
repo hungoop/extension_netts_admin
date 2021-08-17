@@ -1,3 +1,4 @@
+import 'package:admin_client/models/models.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
@@ -21,7 +22,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (event is OnAuthCheck) {
         ///authentication check flow
         //this.add(OnAuthProcess());
+
+        LoginStorage? store = LoginStorage.read();
+        UtilLogger.log('LoginStorage>>>>>>', '$store');
+
         Application.chatSocket.connectAndLogin('auth=nett');
+
+        if(store != null && !Utils.checkDataEmpty(store.token)){
+          Application.chatSocket.login(
+              zone: Application.zoneGameName,
+              uname: '${store.identification}',
+              upass: '${store.token}',
+              param: {
+                'lt': LOGIN_TYPE.TOKEN.getId(),
+              }
+          );
+        }
+
         yield AuthenticationFail(error: 'First Login');
       }
 
@@ -46,6 +63,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       if (event is OnClear) {
+
+        LoginStorage.logout();
+
         yield AuthenticationFail(
           error: "OnClear"
         );

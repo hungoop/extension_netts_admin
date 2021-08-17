@@ -1,6 +1,5 @@
 
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,8 +45,14 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    _countryCode = CountryCode(
+        code: 'VN',
+        dialCode: '84'
+    );
+
     _loginBloc = BlocProvider.of<LoginBloc>(context);
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.index = 1;// default login by id
 
     _telephoneEditingController.addListener(() {
       _loginBloc.add(LoginEventIdentificationChanged(
@@ -65,8 +70,9 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
 
     _passEditingController.addListener(() {
       _loginBloc.add(LoginEventPasswordChanged(
-          password: _passEditingController.text,identification: _tabController.index ==1 ? _emailEditingController.text :  _telephoneEditingController.text
-          , loginType: _getLoginType(_tabController.index))
+          password: _passEditingController.text,
+          identification: _tabController.index ==1 ? _emailEditingController.text : _telephoneEditingController.text,
+          loginType: _getLoginType(_tabController.index))
       );
     });
 
