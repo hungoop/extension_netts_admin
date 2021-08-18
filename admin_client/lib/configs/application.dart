@@ -107,7 +107,4 @@ class Application {
   static const int NUMBER_ACCOUNT_SAVE           = 4;
   static const double BOX_HEIGHT_SWITCH_ACCOUNT  = 265;
 
-  static const String MENTION_SPLIT_KEY          = '|@mt#|';
-  static const String USER_INFO_SPLIT_KEY        = '|#mt#|';
-
 }

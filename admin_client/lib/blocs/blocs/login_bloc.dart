@@ -1,6 +1,5 @@
 
 import 'package:admin_client/models/models.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
 import 'package:admin_client/configs/configs.dart';
@@ -13,10 +12,6 @@ import 'package:admin_client/validators/validators.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(): super(LoginStateInitial());
-
-  _onLoginSuccess(){
-    AppBloc.authBloc.add(OnAuthProcess());
-  }
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent loginEvent) async* {
@@ -79,7 +74,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
       else if(loginEvent is LoginEventSuccess){
         yield LoginStateSuccess();
-        _onLoginSuccess();
       }
       else if(loginEvent is LoginEventFailure){
         yield LoginStateFailure(error: loginEvent.messError);

@@ -46,10 +46,10 @@
 import 'dart:convert';
 
 class RStatisticsRes{
-  int usedMemory;
-  int maxMemory;
-  int freeMemory;
-  int totalMemory;
+  double usedMemory;
+  double maxMemory;
+  double freeMemory;
+  double totalMemory;
   int threadRunning;
   int cpuUsage;
 

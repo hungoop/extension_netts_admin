@@ -436,6 +436,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             type: ButtonType.bigWith,
             loading: _loginBloc.state is LoginStateLoading,
           ),
+          /*
           spaceHeight,
           AppButton(
             AppLanguage().translator(
@@ -452,6 +453,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             onPressed: _onOpenForgetPasswordPage,
             type: ButtonType.bigNo,
           ),
+          *
+           */
         ],
       ),
     );

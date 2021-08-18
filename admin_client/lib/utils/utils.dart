@@ -365,7 +365,7 @@ class Utils {
     return dateFormatted.format(dateTime);
   }
 
-  static String convertBytesToSize(int bytes, int decimals) {
+  static String convertBytesToSize(double bytes, int decimals) {
     if (bytes <= 0) return "0 B";
     const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     var i = (log(bytes) / log(1024)).floor();

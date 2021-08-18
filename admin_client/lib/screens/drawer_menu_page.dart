@@ -1,11 +1,14 @@
 import 'package:admin_client/blocs/blocs.dart';
 import 'package:admin_client/configs/configs.dart';
+import 'package:admin_client/models/models.dart';
 import 'package:admin_client/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class DrawerMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    LoginStorage? store = LoginStorage.read();
+
     return Drawer(
       child: ListView(
         children: [
@@ -20,7 +23,16 @@ class DrawerMenuPage extends StatelessWidget {
                       size: Application.SIZE_ICON_AVATAR,
                     ),
                   ),
-                  Text('User: root')
+                  if(store != null)...[
+                    AppTextField('User: ${store.identification}')
+                  ],
+                  if(store != null)...[
+                    Text(
+                      'token: ${store.token}',
+                      overflow: TextOverflow.clip,
+                      maxLines: 3,
+                    )
+                  ]
                 ],
               )
           ),

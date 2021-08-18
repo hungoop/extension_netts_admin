@@ -8,25 +8,15 @@ import 'package:admin_client/utils/utils.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(InitialAuthenticationState());
 
-  bool _hasOldToken() {
-    return !Utils.checkDataEmpty(UtilPreferences().readToken());
-  }
-
-  _onLoginSuccess(){
-    AppBloc.authBloc.add(OnAuthProcess());
-  }
-
   @override
   Stream<AuthState> mapEventToState(event) async* {
     try{
       if (event is OnAuthCheck) {
         ///authentication check flow
-        //this.add(OnAuthProcess());
-
         LoginStorage? store = LoginStorage.read();
         UtilLogger.log('LoginStorage>>>>>>', '$store');
 
-        Application.chatSocket.connectAndLogin('auth=nett');
+        Application.chatSocket.connectAndLogin('auth=nett_admin');
 
         if(store != null && !Utils.checkDataEmpty(store.token)){
           Application.chatSocket.login(
@@ -44,17 +34,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (event is OnAuthProcess) {
         ///authentication process flow
-        /*
-        String idGen = GUIDGen.generate();
-        String userGen = generateWordPairs().take(12).first.first;
-
-        Application.chatSocket.login(
-            zone: Application.zoneGameName,
-            uname: '${userGen.toUpperCase()} ${idGen.hashCode}',
-            upass: GUIDGen.generate(),
-            param: {}
-        );*/
-
         yield AuthenticationSuccess();
       }
 
@@ -63,13 +42,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       if (event is OnClear) {
-
         LoginStorage.logout();
 
         yield AuthenticationFail(
           error: "OnClear"
         );
 
+        Application.chatSocket.logout();
       }
     }
     catch (ex, st) {

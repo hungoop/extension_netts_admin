@@ -169,6 +169,15 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         AppBloc.connectivityBloc.add(ConnectivityEventWsPingSuccess());
       }
       break;
+      case WsSystemMessage.LOGIN: {
+        var data = event.data;
+        if(data == 'OK'){
+          AppBloc.authBloc.add(OnAuthProcess());
+        }
+
+        UtilLogger.log('LOGIN', '$data');
+      }
+      break;
       default:{
         UtilLogger.log('TTT SYSTEM ${event.cmd}', '${event.data}');
       }

@@ -1,4 +1,5 @@
 
+import 'package:admin_client/configs/configs.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
@@ -17,14 +18,14 @@ class AppConnectivityBloc extends Bloc<AppConnectivityEvent, AppConnectivityStat
           case ConnectivityResult.wifi:
           case ConnectivityResult.mobile:{
             if(curr is ConnectivityStateFail){
-              //Application.chatSocket?.forceCheckReConnect(isFore: true);
+              Application.chatSocket.forceCheckReConnect(isFore: true);
             }
             yield ConnectivityStateSuccess();
           }
           break;
           case ConnectivityResult.none:{
             if(curr is ConnectivityStateSuccess){
-              //Application.chatSocket?.forcePing();
+              Application.chatSocket.forcePing();
             }
             yield ConnectivityStateFail(
                 errorCode: LanguageKeys.DEVICE_OFF_NETWORK_ERROR
