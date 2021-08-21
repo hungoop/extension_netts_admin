@@ -1,5 +1,4 @@
 import 'package:admin_client/models/models.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin_client/blocs/blocs.dart';
 import 'package:admin_client/configs/configs.dart';
